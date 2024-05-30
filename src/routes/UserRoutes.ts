@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userController from "../controller/UserController";
+import userAccessController from "../controller/user/UserAccessController";
 
 class UserRoutes{
     public routesApiUser: Router;
@@ -11,6 +12,7 @@ class UserRoutes{
     
     public setting(){
         this.routesApiUser.get("/view", userController.getMeUser)
+        this.routesApiUser.post("/login", userAccessController.searchOneAccess)
         
     }
 

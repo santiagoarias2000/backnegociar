@@ -16,9 +16,11 @@ class PropertyRoutes {
     config() {
         this.routesApiProperty.get("/view", ViewController_1.default.getProperty);
         this.routesApiProperty.get("/viewsix", ViewController_1.default.getPropertySix);
+        this.routesApiProperty.get("/count", ViewController_1.default.getCouunt);
         this.routesApiProperty.post("/create", Createcontroller_1.default.createProperty);
         this.routesApiProperty.put("/update", UpdateController_1.default.updateProperty);
         this.routesApiProperty.delete("/delete/:propertyId", DeleteController_1.default.deleteController);
+        // View sort property controller
         this.routesApiProperty.get("/sortByPrice", ViewController_1.default.getPropertyByPrice);
         this.routesApiProperty.get("/sortByStratum/:stratum", ViewController_1.default.getPropertyByStratum);
         this.routesApiProperty.get("/sortByProperty/:property", ViewController_1.default.getPropertyByProperty);

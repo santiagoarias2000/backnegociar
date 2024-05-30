@@ -10,6 +10,7 @@ class NeighborhoodRoutes {
   }
   public config() {
     this.routesApiNeighborhood.get("/view/:neighborhood_name", neighborController.getNameNei);
+    this.routesApiNeighborhood.get("/view", neighborController.getNeighbor);
 
   }
 }

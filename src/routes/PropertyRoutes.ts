@@ -13,9 +13,11 @@ class PropertyRoutes {
   public config() {
     this.routesApiProperty.get("/view", propertyController.getProperty);
     this.routesApiProperty.get("/viewsix", propertyController.getPropertySix);
+    this.routesApiProperty.get("/count", propertyController.getCouunt);
     this.routesApiProperty.post("/create", createPropertyController.createProperty);
     this.routesApiProperty.put("/update", updatePropertyController.updateProperty);
     this.routesApiProperty.delete("/delete/:propertyId", deleteProperty.deleteController);
+    // View sort property controller
     this.routesApiProperty.get("/sortByPrice", propertyController.getPropertyByPrice);
     this.routesApiProperty.get("/sortByStratum/:stratum", propertyController.getPropertyByStratum);
     this.routesApiProperty.get("/sortByProperty/:property", propertyController.getPropertyByProperty);

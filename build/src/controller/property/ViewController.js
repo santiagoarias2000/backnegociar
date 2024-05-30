@@ -6,9 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const View_1 = __importDefault(require("../../daos/property/View"));
 const sql_property_1 = require("../../repository/sql_property");
 class PropertyController extends View_1.default {
+    getCouunt(req, res) {
+        PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.COUNT, [], res);
+    }
     getProperty(req, res) {
         const page = req.query.page ? Number(req.query.page) : 1;
-        const limit = req.query.limit ? Number(req.query.limit) : 12;
+        const limit = req.query.limit ? Number(req.query.limit) : 21;
         const offset = (page - 1) * limit;
         const parameters = [limit, offset];
         PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.VIEW, parameters, res);
@@ -39,6 +42,11 @@ class PropertyController extends View_1.default {
         if (state) {
             conditions.push(`p.state = $${parameters.length + 1}`);
             parameters.push(state);
+        }
+        const neighbourhood = req.query.neighbourhood ? String(req.query.neighbourhood) : null;
+        if (neighbourhood) {
+            conditions.push(`n.name = $${parameters.length + 1}`);
+            parameters.push(neighbourhood);
         }
         let whereClause = "";
         if (conditions.length > 0) {

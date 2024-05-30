@@ -3,9 +3,13 @@ import PropertyView from "../../daos/property/View";
 import { SQL_PROPERTY } from "../../repository/sql_property";
 
 class PropertyController extends PropertyView {
+
+  public getCouunt(req: Request, res: Response):void{
+    PropertyController.getPropertyBy(SQL_PROPERTY.COUNT, [], res);
+  }
   public getProperty(req: Request, res: Response): void {
     const page = req.query.page ? Number(req.query.page): 1
-    const limit =req.query.limit ? Number(req.query.limit): 12;
+    const limit =req.query.limit ? Number(req.query.limit): 21;
     const offset = (page - 1) * limit;
     const parameters = [limit, offset];
 
@@ -45,6 +49,11 @@ class PropertyController extends PropertyView {
     if (state) {
       conditions.push(`p.state = $${parameters.length + 1}`);
       parameters.push(state);
+    }
+    const neighbourhood = req.query.neighbourhood ? String(req.query.neighbourhood) : null;
+    if (neighbourhood) {
+      conditions.push(`n.name = $${parameters.length + 1}`);
+      parameters.push(neighbourhood);
     }
 
     let whereClause = "";

@@ -4,7 +4,7 @@ import { SQL_PROPERTY } from "../../repository/sql_property";
 
 class PropertyController extends PropertyCreate {
     public createProperty(req: Request, res: Response): void {
-        const { title, description, price, address, city, state, propertyType, nameImg, imgBase64,neighborhoodId,socialState } = req.body;
+        const { title, description, price, address, city, state, propertyType, nameImg, imgBase64,neighborhoodId,socialState , areaConstruida , bannos, habitaciones, parqueadero} = req.body;
         
         // Verifica que los campos obligatorios no sean nulos
         if (!title || !price || !address || !city || !state) {
@@ -12,7 +12,7 @@ class PropertyController extends PropertyCreate {
             return;
         }
 
-        const params = [title, description, price, address, city, state, propertyType, nameImg, imgBase64,neighborhoodId, socialState];
+        const params = [title, description, price, address, city, state, propertyType, nameImg, imgBase64,neighborhoodId, socialState, areaConstruida , bannos, habitaciones, parqueadero];
 
         try {
             PropertyController.createProperty(SQL_PROPERTY.INSERT, params, res);

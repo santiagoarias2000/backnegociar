@@ -8,7 +8,6 @@ const sql_user_1 = require("../repository/sql_user");
 class UserController extends UserDaos_1.default {
     getMeUser(req, res) {
         UserController.getUser(sql_user_1.USER.VIEW_ALL, [], res);
-        console.log("congi");
     }
 }
 const userController = new UserController();

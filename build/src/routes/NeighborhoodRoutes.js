@@ -12,6 +12,7 @@ class NeighborhoodRoutes {
     }
     config() {
         this.routesApiNeighborhood.get("/view/:neighborhood_name", NeighborController_1.default.getNameNei);
+        this.routesApiNeighborhood.get("/view", NeighborController_1.default.getNeighbor);
     }
 }
 const neighborhoodRoutes = new NeighborhoodRoutes();

@@ -4,7 +4,11 @@ import pgPromise from "pg-promise";
 
 console.log("llega");
 const pgp = pgPromise(opcionesPG);
-const pool = pgp(var_database);
+const pool = pgp({
+  ...var_database,
+  ssl: { rejectUnauthorized: false } 
+});
+
 pool.connect()
     .then((conn)=>{
         console.log('Your enter to database: ', var_database.database);

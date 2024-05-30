@@ -4,7 +4,7 @@ import PropertyUpdate from "../../daos/property/Update";
 
 class PropertyController extends PropertyUpdate {
     public updateProperty(req: Request, res: Response): void {
-        const { title, description, price, address, city, state, propertyType, nameImg, imgBase64,propertyId, socialState } = req.body;
+        const { title, description, price, address, city, state, propertyType, nameImg, imgBase64,propertyId, socialState, area_construida , baños, habitaciones, parqueadero } = req.body;
         
         // Verifica que los campos obligatorios no sean nulos
         if (!title || !price || !address || !city || !state) {
@@ -12,7 +12,7 @@ class PropertyController extends PropertyUpdate {
             return;
         }
 
-        const params = [title, description, price, address, city, state, propertyType, nameImg, imgBase64,propertyId,socialState];
+        const params = [title, description, price, address, city, state, propertyType, nameImg, imgBase64,propertyId,socialState, area_construida , baños, habitaciones, parqueadero];
 
         try {
             PropertyController.updateProperty(SQL_PROPERTY.UPDATE, params, res);

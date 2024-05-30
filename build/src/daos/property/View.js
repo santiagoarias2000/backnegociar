@@ -14,18 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = __importDefault(require("../../config/connection/connection"));
 class PropertyView {
-    static getProperty(sqlConsult, parameter, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield connection_1.default
-                .result(sqlConsult, parameter)
-                .then((result) => {
-                res.status(200).json(result.rows);
-            })
-                .catch((meErr) => {
-                res.status(400).json({ respons: "Don´t work getproperty in Daos" });
-            });
-        });
-    }
     static getPropertyBy(sqlConsult, parameter, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield connection_1.default
@@ -34,7 +22,9 @@ class PropertyView {
                 res.status(200).json(result.rows);
             })
                 .catch((error) => {
-                res.status(400).json({ respons: "Don’t work getPropertyByPrice in Daos", error });
+                res
+                    .status(400)
+                    .json({ respons: "Don’t work getPropertyByPrice in Daos", error });
             });
         });
     }
