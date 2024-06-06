@@ -6,7 +6,7 @@ console.log("llega");
 const pgp = pgPromise(opcionesPG);
 const pool = pgp({
   ...var_database,
-  ssl: { rejectUnauthorized: false } 
+  //ssl: { rejectUnauthorized: false } 
 });
 
 pool.connect()

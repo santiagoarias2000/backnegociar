@@ -2,19 +2,34 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SQL_PROPERTY = void 0;
 exports.SQL_PROPERTY = {
-    VIEW: "SELECT p.property_id, p.title, p.description, p.price, p.address, p.city, p.state, p.property_type, n.name as neignborhood_name, p.estrato_social as social_state, p.area_construida , p.bannos, p.habitaciones, p.parqueadero, p.name_img, p.img_base64 \
-  FROM properties p\
-  JOIN neighborhoods n ON p.neighborhood_id = n.neighborhood_id ORDER BY p.property_id\
-  LIMIT $1 offset $2",
-    VIEW_SIX: "SELECT p.property_id, p.title, p.description, p.price, p.address, p.city, p.state, p.property_type, p.name_img, p.img_base64, n.name as neignborhood_name, p.estrato_social as social_state, p.area_construida , p.bannos, p.habitaciones, p.parqueadero\
-	FROM properties p\
-  JOIN neighborhoods n ON p.neighborhood_id = n.neighborhood_id\
+    VIEW: "SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, \
+  json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images \
+FROM properties p \
+LEFT JOIN property_images pi ON p.property_id = pi.property_id \
+GROUP BY \
+  p.property_id, p.title, p.description, p.price, p.address, p.city, \
+  p.state, p.property_type, p.neighborhood_id, p.estrato_social, \
+  p.area_construida, p.bannos, p.habitaciones, p.parqueadero \
+ORDER BY p.property_id \
+LIMIT $1 OFFSET $2;",
+    VIEW_SIX: "SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, \
+    json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images \
+  FROM properties p \
+  LEFT JOIN property_images pi ON p.property_id = pi.property_id \
+  GROUP BY \
+    p.property_id, p.title, p.description, p.price, p.address, p.city, \
+    p.state, p.property_type, p.neighborhood_id, p.estrato_social, \
+    p.area_construida, p.bannos, p.habitaciones, p.parqueadero \
   ORDER BY RANDOM()\
   LIMIT 6;",
     COUNT: "SELECT COUNT(*) FROM properties",
-    INSERT: "INSERT INTO properties (title, description, price, address, city, state, property_type,name_img,img_base64, neighborhood_id,estrato_social, area_construida , bannos, habitaciones, parqueadero)\
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11, $12, $13, $14,$15)\
-     RETURNING property_id;",
+    INSERT: "      SELECT insert_property_with_images(\
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,\
+      ARRAY[\
+        (1, $14, $15),\
+        (2, $16, $17),\
+      ]::property_images[]\
+    )",
     UPDATE: "UPDATE properties SET title=$1, description=$2, price=$3, address=$4, city=$5, state=$6, property_type=$7,name_img=$8,img_base64=$9, estrato_social=$11, area_construida $12, baños=$13, habitaciones=$14, parqueadero=$15 \
     WHERE property_id=$10 \
     RETURNING property_id;",

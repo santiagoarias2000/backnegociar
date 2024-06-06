@@ -3,13 +3,12 @@ import PropertyView from "../../daos/property/View";
 import { SQL_PROPERTY } from "../../repository/sql_property";
 
 class PropertyController extends PropertyView {
-
-  public getCouunt(req: Request, res: Response):void{
+  public getCouunt(req: Request, res: Response): void {
     PropertyController.getPropertyBy(SQL_PROPERTY.COUNT, [], res);
   }
   public getProperty(req: Request, res: Response): void {
-    const page = req.query.page ? Number(req.query.page): 1
-    const limit =req.query.limit ? Number(req.query.limit): 21;
+    const page = req.query.page ? Number(req.query.page) : 1;
+    const limit = req.query.limit ? Number(req.query.limit) : 21;
     const offset = (page - 1) * limit;
     const parameters = [limit, offset];
 
@@ -50,7 +49,9 @@ class PropertyController extends PropertyView {
       conditions.push(`p.state = $${parameters.length + 1}`);
       parameters.push(state);
     }
-    const neighbourhood = req.query.neighbourhood ? String(req.query.neighbourhood) : null;
+    const neighbourhood = req.query.neighbourhood
+      ? String(req.query.neighbourhood)
+      : null;
     if (neighbourhood) {
       conditions.push(`n.name = $${parameters.length + 1}`);
       parameters.push(neighbourhood);
@@ -61,10 +62,16 @@ class PropertyController extends PropertyView {
       whereClause = "WHERE " + conditions.join(" AND ");
     }
 
-    const sqlQuery = `SELECT p.property_id, p.title, p.description, p.price, p.address, p.city, p.state, p.property_type, p.name_img, p.img_base64, n.name as neighborhood_name, p.estrato_social as social_state 
-                      FROM properties p 
-                      JOIN neighborhoods n ON p.neighborhood_id = n.neighborhood_id 
-                      ${whereClause}`;
+    const sqlQuery = `SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, 
+    json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images 
+    FROM properties p 
+    LEFT JOIN property_images pi ON p.property_id = pi.property_id
+    ${whereClause} 
+    GROUP BY 
+    p.property_id, p.title, p.description, p.price, p.address, p.city, 
+    p.state, p.property_type, p.neighborhood_id, p.estrato_social, 
+    p.area_construida, p.bannos, p.habitaciones, p.parqueadero 
+    ORDER BY p.property_id`;
 
     PropertyController.getPropertyBy(sqlQuery, parameters, res);
   }

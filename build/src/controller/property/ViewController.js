@@ -43,7 +43,9 @@ class PropertyController extends View_1.default {
             conditions.push(`p.state = $${parameters.length + 1}`);
             parameters.push(state);
         }
-        const neighbourhood = req.query.neighbourhood ? String(req.query.neighbourhood) : null;
+        const neighbourhood = req.query.neighbourhood
+            ? String(req.query.neighbourhood)
+            : null;
         if (neighbourhood) {
             conditions.push(`n.name = $${parameters.length + 1}`);
             parameters.push(neighbourhood);
@@ -52,10 +54,16 @@ class PropertyController extends View_1.default {
         if (conditions.length > 0) {
             whereClause = "WHERE " + conditions.join(" AND ");
         }
-        const sqlQuery = `SELECT p.property_id, p.title, p.description, p.price, p.address, p.city, p.state, p.property_type, p.name_img, p.img_base64, n.name as neighborhood_name, p.estrato_social as social_state 
-                      FROM properties p 
-                      JOIN neighborhoods n ON p.neighborhood_id = n.neighborhood_id 
-                      ${whereClause}`;
+        const sqlQuery = `SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, 
+    json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images 
+    FROM properties p 
+    LEFT JOIN property_images pi ON p.property_id = pi.property_id
+    ${whereClause} 
+    GROUP BY 
+    p.property_id, p.title, p.description, p.price, p.address, p.city, 
+    p.state, p.property_type, p.neighborhood_id, p.estrato_social, 
+    p.area_construida, p.bannos, p.habitaciones, p.parqueadero 
+    ORDER BY p.property_id`;
         PropertyController.getPropertyBy(sqlQuery, parameters, res);
     }
     // estrato
