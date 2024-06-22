@@ -14,6 +14,13 @@ class PropertyController extends PropertyView {
 
     PropertyController.getPropertyBy(SQL_PROPERTY.VIEW, parameters, res);
   }
+
+  public getPropertyOne(req: Request, res: Response): void {
+    const propertyId = req.params.property_id;
+    console.log(propertyId);
+    const parameters= [propertyId]
+    PropertyController.getPropertyBy(SQL_PROPERTY.VIEW_ONE, parameters, res);
+  }
   public getPropertySix(req: Request, res: Response): void {
     PropertyController.getPropertyBy(SQL_PROPERTY.VIEW_SIX, [], res);
   }
@@ -102,6 +109,12 @@ class PropertyController extends PropertyView {
     const state = req.params.state;
     const parameters = [state];
     PropertyController.getPropertyBy(SQL_PROPERTY.SORT_STATE, parameters, res);
+  }
+
+  public getPropertyImages(req:Request, res:Response):void{
+    const property_id = req.params.property_id;
+    const parameters= [property_id]
+    PropertyController.getPropertyBy(SQL_PROPERTY.IMG_PROPERTY, parameters, res);
   }
 }
 const propertyController = new PropertyController();

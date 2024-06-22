@@ -12,6 +12,8 @@ class PropertyRoutes {
   }
   public config() {
     this.routesApiProperty.get("/view", propertyController.getProperty);
+    this.routesApiProperty.get("/viewOne/:property_id", propertyController.getPropertyOne);
+    this.routesApiProperty.get("/viewOneImagen/:property_id", propertyController.getPropertyImages);
     this.routesApiProperty.get("/viewsix", propertyController.getPropertySix);
     this.routesApiProperty.get("/count", propertyController.getCouunt);
     this.routesApiProperty.post("/create", createPropertyController.createProperty);

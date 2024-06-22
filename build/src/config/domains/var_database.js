@@ -4,7 +4,7 @@ exports.default = {
     user: "postgres",
     host: "localhost",
     database: "db_negociar_prueba",
-    password: "bichis162332",
+    password: "1007141130",
     port: 5432,
 };
 // export default {

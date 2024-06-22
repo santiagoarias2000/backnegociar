@@ -16,6 +16,12 @@ class PropertyController extends View_1.default {
         const parameters = [limit, offset];
         PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.VIEW, parameters, res);
     }
+    getPropertyOne(req, res) {
+        const propertyId = req.params.property_id;
+        console.log(propertyId);
+        const parameters = [propertyId];
+        PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.VIEW_ONE, parameters, res);
+    }
     getPropertySix(req, res) {
         PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.VIEW_SIX, [], res);
     }
@@ -83,6 +89,11 @@ class PropertyController extends View_1.default {
         const state = req.params.state;
         const parameters = [state];
         PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.SORT_STATE, parameters, res);
+    }
+    getPropertyImages(req, res) {
+        const property_id = req.params.property_id;
+        const parameters = [property_id];
+        PropertyController.getPropertyBy(sql_property_1.SQL_PROPERTY.IMG_PROPERTY, parameters, res);
     }
 }
 const propertyController = new PropertyController();

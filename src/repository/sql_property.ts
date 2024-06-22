@@ -9,6 +9,15 @@ GROUP BY \
   p.area_construida, p.bannos, p.habitaciones, p.parqueadero \
 ORDER BY p.property_id \
 LIMIT $1 OFFSET $2;",
+  VIEW_ONE:"SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, \
+          json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images \
+          FROM properties p \
+          LEFT JOIN property_images pi ON p.property_id = pi.property_id \
+          WHERE p.property_id = $1 \
+           GROUP BY \
+  p.property_id, p.title, p.description, p.price, p.address, p.city, \
+  p.state, p.property_type, p.neighborhood_id, p.estrato_social, \
+  p.area_construida, p.bannos, p.habitaciones, p.parqueadero \ ",
   VIEW_SIX:
     "SELECT p.property_id, p.title, p.description,  p.price, p.address, p.city, p.state, p.property_type, p.neighborhood_id, p.estrato_social, p.area_construida, p.bannos, p.habitaciones, p.parqueadero, \
     json_agg(json_build_object('image_id', pi.image_id, 'image_base64', pi.image_base64, 'name_img', pi.name_img)) AS images \
@@ -54,4 +63,5 @@ LIMIT $1 OFFSET $2;",
   FROM properties p\
   JOIN neighborhoods n ON p.neighborhood_id = n.neighborhood_id\
   WHERE p.state = $1",
+  IMG_PROPERTY: "SELECT image_base64 as image_base64, name_img FROM property_images WHERE property_id = $1;"
 };
